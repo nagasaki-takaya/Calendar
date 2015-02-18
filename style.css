@@ -1,0 +1,32 @@
+#header {
+    margin-left: auto;
+    margin-right: auto;
+}
+#frame {
+    border-collapse:separate;
+    border-spacing:100px 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#month {
+}
+th, td {
+    padding: 5px;
+    border: 1px solid#ccc;
+    text-align: center;
+    vertical-align: top;
+}
+th {
+    background: #eee;
+}
+.youbi_0 {
+    color: red;
+}
+.youbi_6 {
+    color: blue;
+}
+
+.holi {
+    color : red;
+    border-radius:10px;
+}
