@@ -13,8 +13,6 @@ function getDb($y) {
             $holidayName[] = $result['name'];
             $holidayDate[] = $result['date'];
         }
-
-        //return $holidayName;
     } catch ( PDOException $e ) {
         print ('Error:' . $e->getMessage ()) ;
         die ( "接続エラー:({$e->getMessage()}" );

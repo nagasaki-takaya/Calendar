@@ -31,11 +31,11 @@ class Calendar {
         for($day = 1; $day <= $lastDay; $day ++, $youbi ++) {
             $mon = sprintf ( "%02d", $mon );
             $day = sprintf ( "%02d", $day );
-            $string = "{$y}-{$mon}-{$day}";
+            $date = "{$y}-{$mon}-{$day}";
             $checkHoliday = '';
 
-            if (in_array ( $string, $holiDate)) {
-                $num = array_search ( $string, $holiDate);
+            if (in_array ( $date, $holiDate)) {
+                $num = array_search ( $date, $holiDate);
                 $holiname =  $this->holidayName ["$num"];
                 echo sprintf ( '<table><td id=%d_%d
                                         style="position:absolute;border-radius:10px;

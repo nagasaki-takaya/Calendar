@@ -15,8 +15,8 @@ $cal = new Calendar($y);
 <body>
     <table id="header">
         <tr>
-            <th><a href="?y=<?php echo h($cal->prev()); ?>">&laquo;</a></th>
-            <th><?php echo h($cal->thisYear()); ?></th>
+            <th><a href="?y=<?php  h($cal->prev()); ?>">&laquo;</a></th>
+            <th><?php  h($cal->thisYear()); ?></th>
             <th><a href="?y=<?php echo h($cal->next()); ?>">&raquo;</a></th>
         </tr>
     </table>
@@ -49,11 +49,10 @@ for($i = 1; $i <= 12; $i++) :  //1月～12月オブジェクト生成
 ?>
                 </tbody>
             </table>				<!--//-------------ここまで-->
-<?php
-    if ($i == 12) {        //12個(12月)作ったら終了
-        echo "</td></tr></tbody></table>";
-    } else if ($i % 3 == 0) {  //3.6.9個目作ったら改行
-        echo "</td></tr></tbody><table id=frame><tbody><tr><td>";
+<?php if ($i == 12) :?>      //12個(12月)作ったら終了
+       </td></tr></tbody></table>
+<?php elseif ($i % 3 == 0) :?>
+       </td></tr></tbody><table id=frame><tbody><tr><td>";
     } else {
         echo "</td><td>"; //それ以外は横に並べる
     }
