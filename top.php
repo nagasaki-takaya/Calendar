@@ -49,15 +49,18 @@ for($i = 1; $i <= 12; $i++) :  //1月～12月オブジェクト生成
 ?>
                 </tbody>
             </table>				<!--//-------------ここまで-->
+<?php if ($i == 12) :?>
+</td></tr></tbody></table>
+<?php elseif ($i % 3 == 0) :?>
+</td></tr></tbody><table id=frame><tbody><tr><td>
+<?php else :?>
+</td><td>
+<?php endif;?>
 <?php
-    if ($i == 12) {        //12個(12月)作ったら終了
-        echo "</td></tr></tbody></table>";
-    } else if ($i % 3 == 0) {  //3.6.9個目作ったら改行
-        echo "</td></tr></tbody><table id=frame><tbody><tr><td>";
-    } else {
-        echo "</td><td>"; //それ以外は横に並べる
-    }
 endfor;
+foreach ($cal->holidayJs as $holidayJ) {
+    echo $holidayJ;
+}
 ?>
 </body>
 </html>

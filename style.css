@@ -25,7 +25,13 @@ th {
 .youbi_6 {
     color: blue;
 }
-
+.holidayId {
+    position: absolute;
+    border-radius: 10px;
+    z-index: 10;
+    visibility: hidden;
+    background-color:#fbff96;
+}
 .holi {
     color : red;
     border-radius:10px;

@@ -1,62 +1,55 @@
 <?php
 require_once 'dbAccess.php';
 class Calendar {
+    public $holidayJs;
+    public $calendarYear;
     protected $weeks;
-    protected $calendarYear;
-    protected $holidayDate = array();
-    protected $holidayName = array();
+    protected $holidays;
+
 
     public function __construct($y) {
         $this->calendarYear = $y;
-        $arrayDateName = getDb($y);   //戻り値 $arrayDateName[0]=>日付[], [1]=>祝日名[] ...※1
-
-        foreach($arrayDateName as $dateOrName => $arrayDateName){  //※1の配列の分解
-            if($dateOrName){                                       //祝日名
-                $this->holidayName = $arrayDateName;
-            } else {                                               //日付
-                $this->holidayDate = $arrayDateName;
-            }
+        $db = getDb();
+        $sql = "select * from holidaytime where date >= '2015-01-01' && date <= '2015-12-31'";
+        $stt = $db->prepare("select * from holidaytime where date >= '2015-01-01' && date <= '2015-12-31'");
+        $stt->execute();
+        $this->holidays = array();
+        while ($row = $stt->fetch()) {
+            $this->holidays[] = $row;
         }
-    }
 
+    }
     public function create($mon){
         $y = $this->calendarYear;
-        $lastDay = date ("t", strtotime($y."-".$mon."-1 00:00:00"));
-        $youbi   = date ("w", strtotime($y."-".$mon."-1 00:00:00"));
+        $lastDay = date ("t", strtotime($y."-".$mon."-1"));
+        $youbi   = date ("w", strtotime($y."-".$mon."-1"));
         $week = '';
         $this->weeks = array();
-        $holiDate = $this->holidayDate;
-
+        $holidays = $this->holidays;
         $week .= str_repeat('<td></td>', $youbi);
-        for($day = 1; $day <= $lastDay; $day ++, $youbi ++) {
-            $mon = sprintf ( "%02d", $mon );
-            $day = sprintf ( "%02d", $day );
-            $string = "{$y}-{$mon}-{$day}";
-            $checkHoliday = '';
 
-            if (in_array ( $string, $holiDate)) {
-                $num = array_search ( $string, $holiDate);
-                $holiname =  $this->holidayName ["$num"];
-                echo sprintf ( '<table><td id=%d_%d
-                                        style="position:absolute;border-radius:10px;
-                                        z-index:10;
-                                        visibility:hidden;
-                                        background-color:#fbff96;">%s</td>
-                                </table>',$mon ,$day, $holiname);  //祝日にID付与
-
-                $week .= sprintf ( '<td class="youbi_%d holi"
-                                    onmouseover="showPopup(event,\'%d_%d\');"
-                                    onmouseout="hidePopup(\'%d_%d\');">%d
-                                    </td>', $youbi % 7,$mon ,$day, $mon, $day, $day); //マウスオーバー処理
+        foreach ($holidays as $holidayDates){
+            $holidayDate[] = $holidayDates['date'];
+        }
+        for ($day = 1; $day <= $lastDay; $day++, $youbi++) {
+            $datetime = new DateTime("$y-$mon-$day");
+            $calendarDate = $datetime->format('Y-m-d');
+            $holidayNum = array_search($calendarDate, $holidayDate);
+            if ($holidayNum !== false) {
+                $this->holidayJs[] .= sprintf ( '<div class="holidayId" id=%d_%d>%s</div>',$mon ,$day, $holidays["$holidayNum"]['name']);  //祝日にID付与
+                $week .= sprintf ( '<td class="youbi_%d holi" onmouseover="showPopup(event,\'%d_%d\');" onmouseout="hidePopup(\'%d_%d\');">%d</td>'
+                                , $youbi % 7,$mon ,$day, $mon, $day, $day);//マウスオーバー処理
             } else {
                 $week .= sprintf ( '<td class="youbi_%d">%d</td>', $youbi % 7, $day );
             }
+
 
             if (($youbi % 7 == 6) || ($day == $lastDay)) {   //最終週の処理
                 $week .= str_repeat ( '<td></td>', 6 - ($youbi % 7) );
                 $this->weeks [] = '<tr>' . $week . '</tr>';
                 $week = '';
             }
+
         }
     }
 
@@ -71,6 +64,9 @@ class Calendar {
     }
     public function thisYear() {
         return $this->calendarYear;
+    }
+    public function holidayJs(){
+        return $this->holidayJs;
     }
 }
 

@@ -4,7 +4,7 @@
 
         if(!event) var event = window.event;
         if(!event.pageX) px = event.clientX + document.body.scrollLeft; else px = event.pageX;
-        if(!event.pageY) py = event.clientY + document.body.scriollTop; else py = event.pageY;
+        if(!event.pageY) py = event.clientY + document.body.scrollTop; else py = event.pageY;
 
         target.style.left = px+30+"px";
         target.style.top  = py+5 + "px";
