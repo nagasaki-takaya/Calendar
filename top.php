@@ -49,7 +49,6 @@ for($i = 1; $i <= 12; $i++) :  //1月～12月オブジェクト生成
 ?>
                 </tbody>
             </table>				<!--//-------------ここまで-->
-<<<<<<< HEAD
 <?php if ($i == 12) :?>
 </td></tr></tbody></table>
 <?php elseif ($i % 3 == 0) :?>
@@ -58,8 +57,6 @@ for($i = 1; $i <= 12; $i++) :  //1月～12月オブジェクト生成
 </td><td>
 <?php endif;?>
 <?php
-=======
->>>>>>> b062514d4fecc835aaa5ff152dc4f59fd6d6a27e
 endfor;
 foreach ($cal->holidayJs as $holidayJ) {
     echo $holidayJ;

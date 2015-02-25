@@ -57,7 +57,6 @@ class Calendar {
                 $this->weeks [] = '<tr>' . $week . '</tr>';
                 $week = '';
             }
->>>>>>> b062514d4fecc835aaa5ff152dc4f59fd6d6a27e
         }
     }
 
