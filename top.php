@@ -2,8 +2,8 @@
 require_once('Calendar.php');
 require_once('Encode.php');
 
-$year = isset($_GET['y']) ? $_GET['y'] : date("Y");
-$cal = new Calendar($year);
+$y = isset($_GET['y']) ? $_GET['y'] : date("Y");
+$cal = new Calendar($y);
 ?><!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -15,9 +15,9 @@ $cal = new Calendar($year);
 <body>
     <table id="header">
         <tr>
-            <th><a href="?y=<?php echo h($year-1);?>">&laquo;</a></th>
-            <th><?php echo h($year); ?></th>
-            <th><a href="?y=<?php echo h($year+1);?>">&raquo;</a></th>
+            <th><a href="?y=<?php echo h($y-1);?>">&laquo;</a></th>
+            <th><?php echo h($y); ?></th>
+            <th><a href="?y=<?php echo h($y+1);?>">&raquo;</a></th>
         </tr>
     </table>
     <table id="frame">
