@@ -1,2 +1,2 @@
 # Calendar
-Calendar became  my friend!
+Calendar that use PHP and Mysql. Japanese holiday pop up too.
