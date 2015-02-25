@@ -1,4 +1,5 @@
 <?php
+require_once 'Encode.php';
 require_once 'dbAccess.php';
 class Calendar {
     public $holidayJs;
@@ -6,23 +7,23 @@ class Calendar {
     protected $weeks;
     protected $holidays;
 
-
     public function __construct($y) {
         $this->calendarYear = $y;
         $db = getDb();
-        $sql = "select * from holidaytime where date >= '2015-01-01' && date <= '2015-12-31'";
-        $stt = $db->prepare("select * from holidaytime where date >= '2015-01-01' && date <= '2015-12-31'");
+        $sql = "select * from holidaytime where date >= '$y-01-01' && date <= '$y-12-31'";
+        $stt = $db->prepare($sql);
+        //$stt->bindValue(1, $y);
+        //$stt->bindValue(2, $y);
         $stt->execute();
         $this->holidays = array();
         while ($row = $stt->fetch()) {
             $this->holidays[] = $row;
         }
-
     }
     public function create($mon){
         $y = $this->calendarYear;
-        $lastDay = date ("t", strtotime($y."-".$mon."-1"));
-        $youbi   = date ("w", strtotime($y."-".$mon."-1"));
+        $lastDay = date("t", strtotime($y."-".$mon."-1"));
+        $youbi   = date("w", strtotime($y."-".$mon."-1"));
         $week = '';
         $this->weeks = array();
         $holidays = $this->holidays;
@@ -36,37 +37,23 @@ class Calendar {
             $calendarDate = $datetime->format('Y-m-d');
             $holidayNum = array_search($calendarDate, $holidayDate);
             if ($holidayNum !== false) {
-                $this->holidayJs[] .= sprintf ( '<div class="holidayId" id=%d_%d>%s</div>',$mon ,$day, $holidays["$holidayNum"]['name']);  //祝日にID付与
-                $week .= sprintf ( '<td class="youbi_%d holi" onmouseover="showPopup(event,\'%d_%d\');" onmouseout="hidePopup(\'%d_%d\');">%d</td>'
+                $this->holidayJs[] .= sprintf('<div class="holidayId" id=%d_%d>%s</div>',$mon ,$day, $holidays["$holidayNum"]['name']);  //祝日にID付与
+                $week .= sprintf('<td class="youbi_%d holi" onmouseover="showPopup(event,\'%d_%d\');" onmouseout="hidePopup(\'%d_%d\');">%d</td>'
                                 , $youbi % 7,$mon ,$day, $mon, $day, $day);//マウスオーバー処理
             } else {
-                $week .= sprintf ( '<td class="youbi_%d">%d</td>', $youbi % 7, $day );
+                $week .= sprintf('<td class="youbi_%d">%d</td>', $youbi % 7, $day );
             }
-
-
             if (($youbi % 7 == 6) || ($day == $lastDay)) {   //最終週の処理
                 $week .= str_repeat ( '<td></td>', 6 - ($youbi % 7) );
                 $this->weeks [] = '<tr>' . $week . '</tr>';
                 $week = '';
             }
-
         }
     }
-
     public function getWeeks() {
         return $this->weeks;
-    }
-    public function prev() {
-        return $this->calendarYear - 1;
-    }
-    public function next() {
-        return $this->calendarYear + 1;
-    }
-    public function thisYear() {
-        return $this->calendarYear;
     }
     public function holidayJs(){
         return $this->holidayJs;
     }
 }
-
