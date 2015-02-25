@@ -15,8 +15,8 @@ $cal = new Calendar($y);
 <body>
     <table id="header">
         <tr>
-            <th><a href="?y=<?php  h($cal->prev()); ?>">&laquo;</a></th>
-            <th><?php  h($cal->thisYear()); ?></th>
+            <th><a href="?y=<?php echo h($cal->prev()); ?>">&laquo;</a></th>
+            <th><?php echo h($cal->thisYear()); ?></th>
             <th><a href="?y=<?php echo h($cal->next()); ?>">&raquo;</a></th>
         </tr>
     </table>

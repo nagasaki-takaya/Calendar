@@ -25,38 +25,31 @@ class Calendar {
         $youbi   = date ("w", strtotime($y."-".$mon."-1"));
         $week = '';
         $this->weeks = array();
-        $holiDate = $this->holidayDate;
-
+        $holidays = $this->holidays;
         $week .= str_repeat('<td></td>', $youbi);
-        for($day = 1; $day <= $lastDay; $day ++, $youbi ++) {
-            $mon = sprintf ( "%02d", $mon );
-            $day = sprintf ( "%02d", $day );
-            $date = "{$y}-{$mon}-{$day}";
-            $checkHoliday = '';
 
-            if (in_array ( $date, $holiDate)) {
-                $num = array_search ( $date, $holiDate);
-                $holiname =  $this->holidayName ["$num"];
-                echo sprintf ( '<table><td id=%d_%d
-                                        style="position:absolute;border-radius:10px;
-                                        z-index:10;
-                                        visibility:hidden;
-                                        background-color:#fbff96;">%s</td>
-                                </table>',$mon ,$day, $holiname);  //祝日にID付与
-
-                $week .= sprintf ( '<td class="youbi_%d holi"
-                                    onmouseover="showPopup(event,\'%d_%d\');"
-                                    onmouseout="hidePopup(\'%d_%d\');">%d
-                                    </td>', $youbi % 7,$mon ,$day, $mon, $day, $day); //マウスオーバー処理
+        foreach ($holidays as $holidayDates){
+            $holidayDate[] = $holidayDates['date'];
+        }
+        for ($day = 1; $day <= $lastDay; $day++, $youbi++) {
+            $datetime = new DateTime("$y-$mon-$day");
+            $calendarDate = $datetime->format('Y-m-d');
+            $holidayNum = array_search($calendarDate, $holidayDate);
+            if ($holidayNum !== false) {
+                $this->holidayJs[] .= sprintf ( '<div class="holidayId" id=%d_%d>%s</div>',$mon ,$day, $holidays["$holidayNum"]['name']);  //祝日にID付与
+                $week .= sprintf ( '<td class="youbi_%d holi" onmouseover="showPopup(event,\'%d_%d\');" onmouseout="hidePopup(\'%d_%d\');">%d</td>'
+                                , $youbi % 7,$mon ,$day, $mon, $day, $day);//マウスオーバー処理
             } else {
                 $week .= sprintf ( '<td class="youbi_%d">%d</td>', $youbi % 7, $day );
             }
+
 
             if (($youbi % 7 == 6) || ($day == $lastDay)) {   //最終週の処理
                 $week .= str_repeat ( '<td></td>', 6 - ($youbi % 7) );
                 $this->weeks [] = '<tr>' . $week . '</tr>';
                 $week = '';
             }
+
         }
     }
 
