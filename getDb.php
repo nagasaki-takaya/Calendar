@@ -6,9 +6,7 @@ function getDb() {
 
     try {
         $db = new PDO ( $dsn, $usr, $password );
-        //$db->exec ( 'SET NAMES utf8' );
     } catch ( PDOException $e ) {
-        print ('Error:' . $e->getMessage ()) ;
         die ( "接続エラー:({$e->getMessage()}" );
     }
     return $db;
