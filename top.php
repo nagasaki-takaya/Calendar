@@ -2,7 +2,7 @@
 require_once('Calendar.php');
 require_once('Encode.php');
 
-$year = isset($_GET['y']) ? $_GET['y'] : date("Y");
+$year = isset($_GET['y']) ? $_GET['y'] : date('Y');
 $cal = new Calendar($year);
 ?><!DOCTYPE html>
 <html lang="ja">
@@ -29,7 +29,7 @@ for($i = 1; $i <= 12; $i++) :       //1月～12月オブジェクト生成
             <table id="month">      <!--//--create monthここから-->
                 <thead>
                     <tr>
-                        <th colspan='7'><?php echo $i."月"; ?></th>
+                        <th colspan="7"><?php echo $i.'月'; ?></th>
                     </tr>
                     <tr>
                         <th>日</th>
@@ -52,7 +52,7 @@ for($i = 1; $i <= 12; $i++) :       //1月～12月オブジェクト生成
 <?php if ($i == 12) :?>
 </td></tr></tbody></table>
 <?php elseif ($i % 3 == 0) :?>
-</td></tr></tbody><table id=frame><tbody><tr><td>
+</td></tr></tbody><table id="frame"><tbody><tr><td>
 <?php else :?>
 </td><td>
 <?php endif;?>
@@ -61,7 +61,7 @@ for($i = 1; $i <= 12; $i++) :       //1月～12月オブジェクト生成
 <?php
 foreach ($cal->holidayJs as $holidayJ) {
     echo $holidayJ;
-    echo "\n";
+    echo '\n';
 }
 ?>
 <!-- style hide ここまで -->
