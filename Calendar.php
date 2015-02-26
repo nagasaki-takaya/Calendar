@@ -7,23 +7,24 @@ class Calendar {
     protected $weeks;
     protected $holidays;
 
-    public function __construct($y) {
-        $this->calendarYear = $y;
+    public function __construct($year) {
+        $this->calendarYear = $year;
         $db = getDb();
-        $sql = "select * from holidaytime where date >= '$y-01-01' && date <= '$y-12-31'";
+        $sql = "select * from holidaytime where date >= ? && date < ?";
         $stt = $db->prepare($sql);
-        //$stt->bindValue(1, $y);
-        //$stt->bindValue(2, $y);
+        $stt->bindValue(1, "$year-01-01");
+        $stt->bindValue(2, ($year+1)."-01-01");
         $stt->execute();
+        $db = null;
         $this->holidays = array();
         while ($row = $stt->fetch()) {
             $this->holidays[] = $row;
         }
     }
     public function create($mon){
-        $y = $this->calendarYear;
-        $lastDay = date("t", strtotime($y."-".$mon."-1"));
-        $youbi   = date("w", strtotime($y."-".$mon."-1"));
+        $year = $this->calendarYear;
+        $lastDay = date("t", strtotime($year."-".$mon."-1"));
+        $youbi   = date("w", strtotime($year."-".$mon."-1"));
         $week = '';
         $this->weeks = array();
         $holidays = $this->holidays;
@@ -33,7 +34,7 @@ class Calendar {
             $holidayDate[] = $holidayDates['date'];
         }
         for ($day = 1; $day <= $lastDay; $day++, $youbi++) {
-            $datetime = new DateTime("$y-$mon-$day");
+            $datetime = new DateTime("$year-$mon-$day");
             $calendarDate = $datetime->format('Y-m-d');
             $holidayNum = array_search($calendarDate, $holidayDate);
             if ($holidayNum !== false) {
